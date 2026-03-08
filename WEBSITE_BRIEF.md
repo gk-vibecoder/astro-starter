@@ -7,11 +7,45 @@
 - **Domain:** [FILL IN]
 - **Status:** [e.g. New build / Redesign / Migration from Webflow]
 
-## 2. Brand
-- **Brand voice:** [e.g. Professional & trustworthy / Playful & bold / Minimal & technical]
-- **Primary color (CSS var override):** [FILL IN or "use default zinc palette"]
-- **Logo:** [Path to logo file or "TBD"]
-- **Font override:** [FILL IN or "use default Geist"]
+## 2. Brand & Visual Identity
+
+### Voice & Tone
+- **Brand voice:** [e.g. Professional & trustworthy / Playful & bold / Minimal & technical / Authoritative & calm]
+- **Tone adjectives (pick 3):** [e.g. Confident, Approachable, Premium, Witty, Direct, Warm, Innovative]
+- **Tone to avoid:** [e.g. Too corporate / Too casual / Too salesy]
+- **Writing style:** [e.g. Short punchy sentences / Long-form editorial / Data-driven / Conversational]
+
+### Logo & Assets
+- **Logo file:** [Path to SVG/PNG or "TBD"]
+- **Logo usage notes:** [e.g. Dark version only / Has light + dark variants / Wordmark only]
+- **Favicon:** [Path or "derive from logo"]
+- **Existing brand assets:** [Link to Figma / Brand kit / Google Drive or "None"]
+
+### Color
+- **Primary color:** [HEX or "use default zinc palette"]
+- **Secondary / accent color:** [HEX or "None"]
+- **Background preference:** [e.g. White / Off-white / Dark / System default]
+- **Color mood:** [e.g. Cool & neutral / Warm & earthy / Bold & saturated / Monochrome]
+- **Reference sites for color feel:** [URLs or "None"]
+
+### Typography
+- **Font override:** ["use default Geist" or provide justification for a new typeface]
+- **Heading style:** [e.g. Heavy & tight / Light & airy / Mixed weight / All caps labels]
+- **Body text size preference:** [e.g. Comfortable large / Compact / Default]
+
+### Look & Feel
+- **Overall aesthetic:** [e.g. YC/minimal / Enterprise SaaS / Consumer app / Editorial / Luxury]
+- **Density:** [e.g. Spacious with lots of whitespace / Information-dense / Balanced]
+- **Visual style:** [e.g. Flat & clean / Subtle depth / Bold typography-led / Illustration-driven]
+- **Dark mode:** [Yes — default dark / Yes — system preference / Light only]
+- **Imagery style:** [e.g. Abstract/geometric / Real photography / Illustrations / UI screenshots / No images]
+- **Competitor sites to differentiate from:** [URLs or "None"]
+- **Sites you admire (any industry):** [URLs — what do you like about them?]
+- **Sites you dislike:** [URLs — what should we avoid?]
+
+### Animation & Motion
+- **Motion preference:** [Subtle & professional / Energetic & expressive / Minimal — less is more]
+- **Key interactions to animate:** [e.g. Page load hero / Scroll reveals / Hover cards / None beyond defaults]
 
 ## 3. Target Audience
 - **Primary:** [FILL IN]
