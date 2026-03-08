@@ -55,7 +55,7 @@ Claude must embody all three of these roles simultaneously when working on this 
 - **Lucide React** is the only permitted UI icon library — `import { ChevronDown } from 'lucide-react'`
 - Never write inline `<svg>` markup for icons — always use Lucide
 - Lucide icons render as static HTML in `.astro` files without any `client:*` directive — this is fine and preferred
-- For country/language flags, use **`flag-icons`** CSS classes (`fi fi-gb`, `fi fi-se`) — install if needed
+- **`flag-icons`** CSS classes (`fi fi-gb`, `fi fi-se`) are the only permitted source for country/language flags
 - **Unicode symbols** (◈ ◆ ⬡ ◉ ▣ ◎ ⊕) used as decorative feature icons in section cards are an intentional design choice — do not replace them with Lucide icons
 - No other icon libraries (Heroicons, FontAwesome, Phosphor, etc.)
 
