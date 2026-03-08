@@ -47,7 +47,34 @@
 - **Motion preference:** [Subtle & professional / Energetic & expressive / Minimal — less is more]
 - **Key interactions to animate:** [e.g. Page load hero / Scroll reveals / Hover cards / None beyond defaults]
 
-## 3. Target Audience
+## 3. Design Inspiration & References
+
+> Claude will actively use these references throughout the project — comparing sections, pushing back on decisions, and proactively suggesting improvements based on patterns found here.
+
+### Inspiration sites
+List URLs and note specifically what you like about each one:
+
+| URL | What to take from it |
+|-----|----------------------|
+| [URL] | [e.g. Love the hero layout, the card grid, the nav style] |
+| [URL] | [e.g. Color palette and typography feel] |
+| [URL] | [e.g. How they handle the pricing section] |
+
+### Specific sections or patterns to reference
+[e.g. "Use Linear's feature bento as reference for our Features section" / "Vercel's footer structure" / "Stripe's pricing table layout"]
+
+### Sites to avoid / differentiate from
+| URL | What to avoid |
+|-----|---------------|
+| [URL] | [e.g. Too cluttered, too many gradients, outdated feel] |
+| [URL] | [e.g. Looks like every other SaaS — don't copy this pattern] |
+
+### Mood board / Figma link
+[Link to Figma, Notion board, Pinterest, or "None"]
+
+---
+
+## 4. Target Audience
 - **Primary:** [FILL IN]
 - **Secondary:** [FILL IN]
 - **Geography:** [FILL IN]

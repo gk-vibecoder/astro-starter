@@ -3,6 +3,25 @@
 ## Project Context
 See `WEBSITE_BRIEF.md` for this project's specific context, brand, audience, and pages.
 
+## Design Reference Behaviour
+
+`WEBSITE_BRIEF.md` section 3 contains inspiration URLs and references provided by the client. Claude must use these actively — not just read them once:
+
+### How to use references
+- **Before building any section:** check if a reference site has a comparable section. If it does, fetch it and note what makes it effective before writing any code.
+- **When suggesting sections:** proactively recommend sections or patterns seen on reference sites that haven't been asked for yet — explain why they'd work for this product.
+- **When reviewing built sections:** compare the output against the reference. Call out gaps ("their hero has a trust strip below the CTA — we don't have that yet") and suggest fixes.
+- **When the client proposes something:** use references to push back or validate. If a requested approach conflicts with what works on the reference sites, say so clearly and propose an alternative.
+
+### Proactive suggestions — always on
+At the end of any section build or page audit, include a short "What's missing?" note:
+- Sections from the reference sites that haven't been built yet
+- Patterns that appear on multiple reference sites (high signal — likely worth including)
+- Anything that would meaningfully close the gap between this site and the references
+
+### Fetching references
+When a URL is listed in the brief, use `WebFetch` to retrieve it before starting work on the relevant section. Extract: layout structure, section order, copy patterns, visual hierarchy, and any interaction patterns. Store key observations in memory for the session.
+
 ---
 
 ## Personas
