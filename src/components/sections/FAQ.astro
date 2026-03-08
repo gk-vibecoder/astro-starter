@@ -1,0 +1,39 @@
+---
+import { buttonVariants } from '@/components/ui/button';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { getLangFromUrl, useTranslations, getLocalePath } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="faq" class="mx-auto max-w-6xl px-6 py-24">
+  <div class="grid lg:grid-cols-3 gap-16">
+    <AnimatedSection client:visible>
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">{t.faq.label}</p>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        {t.faq.headline}
+      </h2>
+      <p class="mt-4 text-sm text-muted-foreground leading-relaxed">
+        {t.faq.description}
+      </p>
+      <a href={getLocalePath(lang, '/faq')} class={`mt-8 ${buttonVariants({ variant: 'outline', size: 'sm' })}`}>
+        {t.faq.fullFaqCta}
+      </a>
+    </AnimatedSection>
+
+    <AnimatedSection client:visible delay={0.15} className="lg:col-span-2 divide-y divide-border">
+      {t.faq.items.map(({ q, a }) => (
+        <details class="group py-5">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none">
+            <span class="text-sm font-semibold text-foreground">{q}</span>
+            <span class="size-5 rounded-full border border-border flex items-center justify-center shrink-0 text-muted-foreground group-open:rotate-45 transition-transform duration-200">
+              +
+            </span>
+          </summary>
+          <p class="mt-4 text-sm text-muted-foreground leading-relaxed">{a}</p>
+        </details>
+      ))}
+    </AnimatedSection>
+  </div>
+</section>

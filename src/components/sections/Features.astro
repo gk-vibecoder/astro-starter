@@ -1,0 +1,31 @@
+---
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="features" class="mx-auto max-w-6xl px-6 py-24">
+  <AnimatedSection client:visible className="text-center mb-16">
+    <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">{t.features.label}</p>
+    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+      {t.features.headline}
+    </h2>
+    <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+      {t.features.description}
+    </p>
+  </AnimatedSection>
+
+  <AnimatedSection client:visible delay={0.15} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {t.features.items.map(({ icon, title, body }) => (
+      <div class="rounded-xl border border-border p-6">
+        <div class="mb-4 size-10 rounded-lg bg-muted flex items-center justify-center">
+          <span class="text-foreground text-base">{icon}</span>
+        </div>
+        <h3 class="font-semibold text-foreground">{title}</h3>
+        <p class="mt-2 text-sm text-muted-foreground leading-relaxed">{body}</p>
+      </div>
+    ))}
+  </AnimatedSection>
+</section>

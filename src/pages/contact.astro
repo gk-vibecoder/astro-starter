@@ -1,0 +1,117 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import { seo } from '@/config/seo';
+import { Button } from '@/components/ui/button';
+
+const contactDetails = [
+  { label: 'Email', value: 'hello@acme.com', href: 'mailto:hello@acme.com' },
+  { label: 'Address', value: '[FILL IN]', href: null },
+  { label: 'LinkedIn', value: 'linkedin.com/company/acme', href: 'https://www.linkedin.com/company/acme' },
+  { label: 'X (Twitter)', value: '@acme', href: 'https://twitter.com/acme' },
+];
+---
+
+<BaseLayout
+  title={seo.contact.title}
+  description={seo.contact.description}
+>
+  <PageHero
+    label="Contact"
+    title="Want to get in touch?"
+    description="Send us an email at hello@acme.com or submit the form below and we'll get back to you as soon as possible."
+  />
+
+  <!-- Contact form + details -->
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <div class="grid lg:grid-cols-3 gap-16">
+
+      <!-- Form -->
+      <div class="lg:col-span-2">
+        <form class="space-y-4" action="#" method="POST">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-foreground mb-1.5">Full name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                placeholder="Jane Smith"
+                class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-foreground mb-1.5">Your email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                placeholder="jane@example.com"
+                class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="topic" class="block text-sm font-medium text-foreground mb-1.5">Topic</label>
+            <input
+              id="topic"
+              name="topic"
+              type="text"
+              placeholder="General inquiry, partnership, support..."
+              class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-foreground mb-1.5">Your message</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              required
+              placeholder="Tell us how we can help..."
+              class="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+            ></textarea>
+          </div>
+          <Button type="submit" size="lg" client:visible>Send message</Button>
+        </form>
+      </div>
+
+      <!-- Contact details -->
+      <div class="space-y-8">
+        <div>
+          <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">Contact</p>
+          <div class="space-y-4">
+            {contactDetails.map(({ label, value, href }) => (
+              <div>
+                <p class="text-xs text-muted-foreground mb-0.5">{label}</p>
+                {href ? (
+                  <a href={href} class="text-sm font-medium text-foreground hover:text-muted-foreground transition-colors">
+                    {value}
+                  </a>
+                ) : (
+                  <p class="text-sm font-medium text-foreground">{value}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-border bg-muted/30 p-5">
+          <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3">Our office</p>
+          <p class="text-sm text-foreground font-medium">[Office Name]</p>
+          <p class="text-sm text-muted-foreground mt-1">
+            We are based in [City]. Come by to say hello and have a coffee with us.
+          </p>
+          <p class="text-xs text-muted-foreground mt-3">
+            [Address line 1]<br />[Address line 2]
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FAQ />
+</BaseLayout>

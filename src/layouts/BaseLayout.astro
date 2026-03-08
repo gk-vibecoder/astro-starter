@@ -1,0 +1,112 @@
+---
+import { SEO } from 'astro-seo';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import '@/styles/globals.css';
+import { getLangFromUrl } from '@/i18n/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  og?: {
+    image?: string;
+    type?: 'website' | 'article';
+  };
+  canonical?: string;
+  noindex?: boolean;
+  /** Optional page-specific JSON-LD schema (stringified) */
+  pageSchema?: string;
+}
+
+const {
+  title,
+  description,
+  og,
+  canonical,
+  noindex = false,
+  pageSchema,
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const siteUrl = 'https://acme.com';
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
+const ogImage = og?.image ?? `${siteUrl}/og-default.png`;
+
+const organizationSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Acme',
+  url: siteUrl,
+  logo: `${siteUrl}/favicon.svg`,
+  description: 'The Modern Platform Powered by AI',
+  sameAs: [
+    // Add social profile URLs here
+    // 'https://twitter.com/acme',
+    // 'https://linkedin.com/company/acme',
+  ],
+});
+
+const websiteSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Acme',
+  url: siteUrl,
+});
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO
+      title={title}
+      titleTemplate="%s — Acme"
+      description={description}
+      canonical={canonicalURL}
+      noindex={noindex}
+      openGraph={{
+        basic: {
+          title,
+          type: og?.type ?? 'website',
+          image: ogImage,
+          url: canonicalURL,
+        },
+        optional: {
+          description,
+          siteName: 'Acme',
+        },
+      }}
+      twitter={{
+        card: 'summary_large_image',
+        title,
+        description,
+        image: ogImage,
+      }}
+    />
+
+    <script type="application/ld+json" set:html={organizationSchema} />
+    <script type="application/ld+json" set:html={websiteSchema} />
+    {pageSchema && <script type="application/ld+json" set:html={pageSchema} />}
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

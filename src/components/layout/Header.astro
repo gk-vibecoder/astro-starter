@@ -1,0 +1,220 @@
+---
+import ThemeToggle from '@/components/layout/ThemeToggle.astro';
+import { getLangFromUrl, useTranslations, getLocalePath } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+type NavLink = { type: 'link'; label: string; href: string };
+type NavGroup = { type: 'group'; label: string; items: { label: string; href: string; sub: string }[] };
+type NavItem = NavLink | NavGroup;
+
+const lp = (path: string) => getLocalePath(lang, path);
+
+const navItems: NavItem[] = [
+  {
+    type: 'group',
+    label: t.nav.features,
+    items: [
+      { label: t.nav.featuresItems.aiInsights.label, href: lp('/features'), sub: t.nav.featuresItems.aiInsights.sub },
+      { label: t.nav.featuresItems.integrations.label, href: lp('/integrations'), sub: t.nav.featuresItems.integrations.sub },
+      { label: t.nav.featuresItems.security.label, href: lp('/security'), sub: t.nav.featuresItems.security.sub },
+    ],
+  },
+  {
+    type: 'group',
+    label: t.nav.about,
+    items: [
+      { label: t.nav.companyItems.aboutUs.label, href: lp('/about-us'), sub: t.nav.companyItems.aboutUs.sub },
+      { label: t.nav.companyItems.contact.label, href: lp('/contact'), sub: t.nav.companyItems.contact.sub },
+    ],
+  },
+  {
+    type: 'group',
+    label: t.nav.resources,
+    items: [
+      { label: t.nav.resourcesItems.blog.label, href: lp('/blog'), sub: t.nav.resourcesItems.blog.sub },
+      { label: t.nav.resourcesItems.faq.label, href: lp('/faq'), sub: t.nav.resourcesItems.faq.sub },
+      { label: t.nav.resourcesItems.contact.label, href: lp('/contact'), sub: t.nav.resourcesItems.contact.sub },
+    ],
+  },
+];
+
+const currentPath = Astro.url.pathname;
+
+function groupIsActive(items: { href: string }[]) {
+  return items.some(({ href }) => currentPath === href || currentPath.startsWith(href));
+}
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-sm">
+  <input type="checkbox" id="nav-toggle" class="peer sr-only" />
+
+  <!-- Main bar -->
+  <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
+    <!-- Wordmark -->
+    <a href={lp('/')} class="font-semibold text-foreground hover:opacity-80 transition-opacity">
+      Acme
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
+      {navItems.map((item) => item.type === 'link' ? (
+        <a
+          href={item.href}
+          class:list={[
+            'rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-foreground',
+            currentPath === item.href ? 'text-foreground font-medium' : 'text-muted-foreground',
+          ]}
+        >
+          {item.label}
+        </a>
+      ) : (
+        <div class="relative group">
+          <button
+            type="button"
+            class:list={[
+              'flex items-center gap-1 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-foreground',
+              groupIsActive(item.items) ? 'text-foreground font-medium' : 'text-muted-foreground',
+            ]}
+          >
+            {item.label}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="transition-transform duration-150 group-hover:rotate-180"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+
+          <!-- Dropdown -->
+          <div class="absolute left-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+            <div class="min-w-52 rounded-lg border border-border bg-background py-1 shadow-lg">
+              {item.items.map(({ label: itemLabel, href, sub }) => (
+                <a
+                  href={href}
+                  class:list={[
+                    'flex flex-col px-3 py-2 text-sm transition-colors hover:bg-accent',
+                    currentPath === href || currentPath.startsWith(href)
+                      ? 'text-foreground'
+                      : 'text-muted-foreground hover:text-foreground',
+                  ]}
+                >
+                  <span class="font-medium text-foreground">{itemLabel}</span>
+                  {sub && <span class="text-xs text-muted-foreground">{sub}</span>}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </nav>
+
+    <!-- Desktop CTA -->
+    <div class="hidden md:flex items-center gap-3">
+      <ThemeToggle />
+      <a
+        href="#"
+        class="inline-flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+      >
+        {t.nav.signIn}
+      </a>
+      <a
+        href="#"
+        class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+      >
+        {t.nav.getStarted}
+      </a>
+    </div>
+
+    <!-- Mobile hamburger toggle -->
+    <label
+      for="nav-toggle"
+      class="inline-flex md:hidden cursor-pointer items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      aria-label="Toggle navigation menu"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="4" x2="20" y1="6" y2="6" />
+        <line x1="4" x2="20" y1="12" y2="12" />
+        <line x1="4" x2="20" y1="18" y2="18" />
+      </svg>
+    </label>
+  </div>
+
+  <!-- Mobile menu (controlled by peer checkbox) -->
+  <div class="hidden peer-checked:block border-t border-border bg-background md:hidden">
+    <nav class="mx-auto max-w-6xl px-6 pb-6" aria-label="Mobile navigation">
+      {navItems.map((item) => item.type === 'link' ? (
+        <div class="pt-4">
+          <a
+            href={item.href}
+            class:list={[
+              'block py-2 text-sm transition-colors hover:text-foreground',
+              currentPath === item.href ? 'font-medium text-foreground' : 'text-muted-foreground',
+            ]}
+          >
+            {item.label}
+          </a>
+        </div>
+      ) : (
+        <div class="pt-4">
+          <p class="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            {item.label}
+          </p>
+          {item.items.map(({ label: itemLabel, href }) => (
+            <a
+              href={href}
+              class:list={[
+                'block py-2 text-sm transition-colors hover:text-foreground',
+                currentPath === href || currentPath.startsWith(href)
+                  ? 'font-medium text-foreground'
+                  : 'text-muted-foreground',
+              ]}
+            >
+              {itemLabel}
+            </a>
+          ))}
+        </div>
+      ))}
+
+      <div class="mt-4 flex items-center justify-between border-t border-border pt-4 pb-2">
+        <span class="text-xs text-muted-foreground">Theme</span>
+        <ThemeToggle />
+      </div>
+      <div class="flex flex-col gap-2">
+        <a
+          href="#"
+          class="inline-flex h-9 items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+        >
+          {t.nav.signIn}
+        </a>
+        <a
+          href="#"
+          class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-xs transition-colors hover:bg-primary/90"
+        >
+          {t.nav.getStarted}
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>

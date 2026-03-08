@@ -1,0 +1,90 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import { seo } from '@/config/seo';
+
+const sections = [
+  {
+    heading: 'Introduction',
+    body: 'acme.com is a digital platform operated by Acme, Inc. By accessing or using the Acme platform, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the Service.',
+  },
+  {
+    heading: '1. Acceptance of Terms',
+    body: 'By accessing the Service, you confirm that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy. These terms apply to all users of the platform.',
+  },
+  {
+    heading: '2. Eligibility',
+    body: 'You must be at least 18 years of age to use the Acme platform. By accessing or using the Service, you represent and warrant that you meet this requirement.',
+  },
+  {
+    heading: '3. User Responsibilities',
+    body: 'You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. You agree to provide accurate and complete information when creating an account and to keep this information up to date. You must comply with all applicable laws.',
+  },
+  {
+    heading: '4. Services Provided',
+    body: 'The Acme platform enables you to: manage and analyze your operations through integrations with third-party tools, access AI-powered insights via the Aria AI Agent, and securely store and manage documents related to your business. The Service is provided for informational and operational purposes only and does not constitute professional advice.',
+  },
+  {
+    heading: '5. Third-Party Integrations',
+    body: 'By connecting your third-party accounts, you authorize Acme to access and retrieve information from those services on your behalf. Acme has read-only or limited access as defined per integration. We are not responsible for the accuracy or completeness of data provided by third-party services.',
+  },
+  {
+    heading: '6. Privacy and Data Protection',
+    body: 'Acme, Inc. complies with applicable data protection regulations. Your use of the Service is also governed by our Privacy Policy, which is incorporated into these Terms by reference.',
+  },
+  {
+    heading: '7. User Conduct',
+    body: 'You agree not to use the Service in any unlawful manner, to attempt to gain unauthorized access to any part of the platform or its systems, or to transmit malicious code, spam, or harmful content. Violation of these rules may result in immediate termination of your account.',
+  },
+  {
+    heading: '8. Termination',
+    body: 'Acme reserves the right to suspend or terminate your access to the Service at any time, without notice, if you violate these Terms or engage in behavior that is harmful to the platform or other users. You may also delete your account at any time by contacting us.',
+  },
+  {
+    heading: '9. Limitation of Liability',
+    body: 'The Service is provided "as is" without warranties of any kind, express or implied. Acme does not warrant that the Service will be uninterrupted, error-free, or completely secure. To the maximum extent permitted by law, Acme shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Service.',
+  },
+  {
+    heading: '10. Changes to These Terms',
+    body: 'We may update these Terms of Service from time to time. Material changes will be posted on this page. Continued use of the Service after changes are posted constitutes your acceptance of the revised Terms.',
+  },
+  {
+    heading: '11. Governing Law',
+    body: 'These Terms are governed by the laws of [JURISDICTION]. Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts of [JURISDICTION].',
+  },
+];
+---
+
+<BaseLayout
+  title={seo.termsOfService.title}
+  description={seo.termsOfService.description}
+  noindex={seo.termsOfService.noindex}
+>
+  <PageHero
+    label="Legal"
+    title="Terms of Service"
+    description="The terms and conditions governing your use of the Acme platform."
+  />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 pb-24">
+    <p class="text-xs text-muted-foreground mb-12">Operated by Acme, Inc.</p>
+
+    <div class="space-y-10">
+      {sections.map(({ heading, body }) => (
+        <div>
+          <h2 class="text-lg font-semibold text-foreground mb-3">{heading}</h2>
+          <p class="text-sm text-muted-foreground leading-relaxed">{body}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-16 rounded-xl border border-border bg-muted/30 p-6">
+      <p class="text-sm text-muted-foreground">
+        Questions about these Terms? Contact us at{' '}
+        <a href="mailto:hello@acme.com" class="text-foreground underline underline-offset-4 hover:no-underline">
+          hello@acme.com
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

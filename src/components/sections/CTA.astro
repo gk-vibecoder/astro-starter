@@ -1,0 +1,73 @@
+---
+import { Button, buttonVariants } from '@/components/ui/button';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  note?: string;
+  showForm?: boolean;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const {
+  title = t.cta.title,
+  description = t.cta.description,
+  ctaLabel = t.cta.ctaLabel,
+  ctaHref = '#',
+  note = t.cta.note,
+  showForm = true,
+} = Astro.props;
+---
+
+<section id="cta" class="mx-auto max-w-6xl px-6 pb-24">
+  <AnimatedSection client:visible>
+  <div class="rounded-2xl bg-foreground px-8 py-16 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-background">
+      {title}
+    </h2>
+    <p class="mt-4 text-background/70 max-w-md mx-auto">
+      {description}
+    </p>
+
+    {showForm ? (
+      <form class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-sm mx-auto" action="#" method="POST">
+        <input
+          type="email"
+          name="email"
+          placeholder={t.cta.emailPlaceholder}
+          required
+          class="w-full rounded-lg border border-background/20 bg-background/10 px-4 py-2.5 text-sm text-background placeholder:text-background/40 focus:outline-none focus:ring-2 focus:ring-background/30"
+        />
+        <Button
+          type="submit"
+          variant="outline"
+          size="default"
+          className="shrink-0 bg-background text-foreground hover:bg-background/90 border-background"
+          client:visible
+        >
+          {ctaLabel}
+        </Button>
+      </form>
+    ) : (
+      <div class="mt-8">
+        <a
+          href={ctaHref}
+          class={`${buttonVariants({ variant: 'outline', size: 'lg' })} bg-background text-foreground hover:bg-background/90 border-background`}
+        >
+          {ctaLabel}
+        </a>
+      </div>
+    )}
+
+    {note && (
+      <p class="mt-4 text-xs text-background/50">{note}</p>
+    )}
+  </div>
+  </AnimatedSection>
+</section>

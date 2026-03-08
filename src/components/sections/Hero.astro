@@ -1,0 +1,53 @@
+---
+import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="hero" class="mx-auto max-w-6xl px-6 py-24 md:py-32 text-center">
+  <AnimatedSection client:visible slow>
+    <Badge variant="secondary" className="mb-6">
+      {t.hero.badge}
+    </Badge>
+  </AnimatedSection>
+
+  <AnimatedSection client:visible slow delay={0.12}>
+    <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-foreground max-w-4xl mx-auto leading-[1.1]">
+      {t.hero.headline}
+    </h1>
+  </AnimatedSection>
+
+  <AnimatedSection client:visible slow delay={0.24}>
+    <p class="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+      {t.hero.description}
+    </p>
+  </AnimatedSection>
+
+  <AnimatedSection client:visible slow delay={0.36}>
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href="#" class={buttonVariants({ size: 'lg' })}>
+        {t.hero.ctaPrimary}
+      </a>
+      <a href="#" class={buttonVariants({ variant: 'outline', size: 'lg' })}>
+        {t.hero.ctaSecondary}
+      </a>
+    </div>
+    <p class="mt-4 text-xs text-muted-foreground">
+      {t.hero.note}
+    </p>
+  </AnimatedSection>
+
+  <AnimatedSection client:visible slow delay={0.48}>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-2">
+      {t.hero.tags.map((tag) => (
+        <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+          {tag}
+        </span>
+      ))}
+    </div>
+  </AnimatedSection>
+</section>

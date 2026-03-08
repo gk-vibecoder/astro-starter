@@ -1,0 +1,56 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { seo } from '@/config/seo';
+import Hero from '@/components/sections/Hero.astro';
+import StatsStrip from '@/components/sections/StatsStrip.astro';
+import Features from '@/components/sections/Features.astro';
+import Integrations from '@/components/sections/Integrations.astro';
+import Testimonials from '@/components/sections/Testimonials.astro';
+import AssetClasses from '@/components/sections/AssetClasses.astro';
+import InvestorRelations from '@/components/sections/InvestorRelations.astro';
+import Security from '@/components/sections/Security.astro';
+import LatestNews from '@/components/sections/LatestNews.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import CTA from '@/components/sections/CTA.astro';
+
+const softwareAppSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Acme',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  description: 'The modern platform powered by AI. Manage, analyze, and grow your business in one place.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  url: 'https://acme.com',
+  featureList: [
+    'Aria AI Agent for intelligent insights',
+    'Real-time analytics and dashboards',
+    '50+ tool integrations',
+    'Enterprise-grade security',
+    'SSO and 2FA authentication',
+    'Document management',
+  ],
+});
+---
+
+<BaseLayout
+  title={seo.home.title}
+  description={seo.home.description}
+  pageSchema={softwareAppSchema}
+>
+  <Hero />
+  <StatsStrip />
+  <Features />
+  <Integrations />
+  <Testimonials />
+  <AssetClasses />
+  <InvestorRelations />
+  <Security />
+  <LatestNews />
+  <FAQ />
+  <CTA />
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import { buttonVariants } from '@/components/ui/button';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="security" class="border-y border-border bg-muted/30 py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <AnimatedSection client:visible className="text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">{t.security.label}</p>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        {t.security.headline}
+      </h2>
+      <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        {t.security.description}
+      </p>
+    </AnimatedSection>
+
+    <AnimatedSection client:visible delay={0.15} className="grid sm:grid-cols-3 gap-6 mb-12">
+      {t.security.features.map(({ icon, title, body }) => (
+        <div class="rounded-xl border border-border bg-card p-6">
+          <div class="mb-4 size-10 rounded-lg bg-muted flex items-center justify-center">
+            <span class="text-foreground text-base">{icon}</span>
+          </div>
+          <h3 class="font-semibold text-foreground">{title}</h3>
+          <p class="mt-2 text-sm text-muted-foreground leading-relaxed">{body}</p>
+        </div>
+      ))}
+    </AnimatedSection>
+
+    <AnimatedSection client:visible delay={0.25} className="text-center">
+      <a href="#" class={buttonVariants({ variant: 'outline' })}>
+        {t.security.cta}
+      </a>
+    </AnimatedSection>
+  </div>
+</section>

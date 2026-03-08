@@ -1,0 +1,196 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import { seo } from '@/config/seo';
+import CTA from '@/components/sections/CTA.astro';
+import { Button } from '@/components/ui/button';
+
+const stats = [
+  { value: '10K+', label: 'Active users' },
+  { value: '99.9%', label: 'Uptime SLA' },
+  { value: '50+', label: 'Integrations' },
+];
+
+const team = [
+  { name: 'Alex Johnson', role: 'CEO & Co-founder', initials: 'AJ' },
+  { name: 'Maria Chen', role: 'CTO & Co-founder', initials: 'MC' },
+  { name: 'James Wright', role: 'Head of Product', initials: 'JW' },
+  { name: 'Sara Patel', role: 'Head of Design', initials: 'SP' },
+  { name: 'Tom Rivera', role: 'Head of Engineering', initials: 'TR' },
+];
+
+const values = [
+  {
+    icon: '◆',
+    title: 'Innovation',
+    body: 'We constantly push the boundaries of what is possible in our space.',
+  },
+  {
+    icon: '◉',
+    title: 'Integrity',
+    body: 'We hold ourselves to the highest standards in everything we do.',
+  },
+  {
+    icon: '◈',
+    title: 'User-centricity',
+    body: 'We put our users first in every product decision we make.',
+  },
+  {
+    icon: '◎',
+    title: 'Growth mindset',
+    body: 'We believe in constant improvement and learning openly from mistakes.',
+  },
+  {
+    icon: '⬡',
+    title: 'Collaboration',
+    body: 'The best outcomes come from working together across disciplines.',
+  },
+  {
+    icon: '▣',
+    title: 'Autonomy',
+    body: 'We trust our team members to do their best work with independence.',
+  },
+];
+---
+
+<BaseLayout
+  title={seo.aboutUs.title}
+  description={seo.aboutUs.description}
+>
+  <PageHero
+    label="About Us"
+    title="The modern platform powered by AI."
+    description="We got tired of fragmented tools and manual workflows. A unified AI-powered platform should be accessible to every team."
+  />
+
+  <!-- Vision -->
+  <section class="border-y border-border bg-muted/30 py-24">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div>
+          <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">Our Vision</p>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            Building an accessible platform experience for every team.
+          </h2>
+          <p class="mt-4 text-muted-foreground leading-relaxed">
+            Acme was founded to solve the problem of fragmented tools and siloed data. We set out to build a platform that consolidates the full operational stack — helping teams manage, analyze, and grow without context-switching or manual work.
+          </p>
+          <p class="mt-4 text-muted-foreground leading-relaxed">
+            Our mission is to democratize access to enterprise-grade AI tooling by building products that are powerful yet approachable for teams of all sizes. Through the Acme platform, we continue to expand our integrations and partnerships to create value at every level.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+          {stats.map(({ value, label }) => (
+            <div class="rounded-xl border border-border bg-card p-6 text-center">
+              <p class="text-2xl font-bold text-foreground">{value}</p>
+              <p class="mt-1 text-xs text-muted-foreground leading-snug">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform -->
+  <section class="mx-auto max-w-6xl px-6 py-24">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">The Platform</p>
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+          The Acme Platform
+        </h2>
+        <p class="mt-4 text-muted-foreground leading-relaxed">
+          The Acme platform leverages AI, open APIs, and a growing partner ecosystem to create a self-service operational hub. It enables teams to consolidate their entire stack in one place — from analytics and automation to document management and integrations.
+        </p>
+        <div class="mt-8">
+          <Button variant="outline" size="lg" asChild>
+            <a href="/contact">Get in touch</a>
+          </Button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        {[
+          { label: 'Founded', value: '[FILL IN]' },
+          { label: 'HQ', value: '[FILL IN]' },
+          { label: 'Stage', value: 'Early Access' },
+          { label: 'Focus', value: '[FILL IN]' },
+        ].map(({ label, value }) => (
+          <div class="rounded-xl border border-border bg-card p-5">
+            <p class="text-xs text-muted-foreground uppercase tracking-wider mb-1">{label}</p>
+            <p class="font-semibold text-foreground">{value}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="border-y border-border bg-muted/30 py-24">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="text-center mb-16">
+        <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">Team</p>
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+          The people behind Acme
+        </h2>
+        <p class="mt-4 text-muted-foreground max-w-xl mx-auto">
+          We are committed to making Acme a great platform for our users and a great workplace for the team.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        {team.map(({ name, role, initials }) => (
+          <div class="rounded-xl border border-border bg-card p-6 flex flex-col items-center gap-3 text-center w-44">
+            <div class="size-14 rounded-full bg-muted border border-border flex items-center justify-center">
+              <span class="text-sm font-semibold text-muted-foreground">{initials}</span>
+            </div>
+            <div>
+              <p class="font-semibold text-foreground text-sm">{name}</p>
+              <p class="text-xs text-muted-foreground mt-0.5">{role}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Join CTA -->
+      <div class="mt-16 rounded-xl border border-border bg-card p-8 max-w-2xl mx-auto text-center">
+        <h3 class="text-xl font-bold text-foreground">Want to join the team?</h3>
+        <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+          We are always looking for talented people to help build the future of the platform. Feel free to reach out if you think it would be a great fit.
+        </p>
+        <div class="mt-6">
+          <Button variant="outline" asChild>
+            <a href="/contact">Contact us</a>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="mx-auto max-w-6xl px-6 py-24">
+    <div class="text-center mb-16">
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">Culture</p>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        What we stand for
+      </h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {values.map(({ icon, title, body }) => (
+        <div class="rounded-xl border border-border p-6">
+          <div class="mb-4 size-10 rounded-lg bg-muted flex items-center justify-center">
+            <span class="text-foreground text-base">{icon}</span>
+          </div>
+          <h3 class="font-semibold text-foreground">{title}</h3>
+          <p class="mt-2 text-sm text-muted-foreground leading-relaxed">{body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FAQ />
+  <CTA />
+</BaseLayout>

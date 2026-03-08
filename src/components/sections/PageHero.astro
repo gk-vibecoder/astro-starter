@@ -1,0 +1,29 @@
+---
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+
+interface Props {
+  label?: string;
+  title: string;
+  description?: string;
+  align?: 'left' | 'center';
+}
+
+const { label, title, description, align = 'left' } = Astro.props;
+---
+
+<section class:list={['mx-auto max-w-6xl px-6 pt-16 pb-8 md:pt-24 md:pb-12', align === 'center' && 'text-center']}>
+  <AnimatedSection client:visible slow>
+    {label && (
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">{label}</p>
+    )}
+    <h1 class:list={['text-4xl font-bold tracking-tight text-foreground md:text-5xl', align === 'left' ? 'max-w-3xl' : 'max-w-3xl mx-auto']}>
+      {title}
+    </h1>
+    {description && (
+      <p class:list={['mt-4 text-lg leading-relaxed text-muted-foreground', align === 'left' ? 'max-w-2xl' : 'max-w-2xl mx-auto']}>
+        {description}
+      </p>
+    )}
+    <slot />
+  </AnimatedSection>
+</section>

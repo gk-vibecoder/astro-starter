@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { getLangFromUrl, useTranslations, getLocalePath } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const dateLocale = lang === 'sv' ? 'sv-SE' : 'en-GB';
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+---
+
+{posts.length > 0 && (
+  <section id="news" class="mx-auto max-w-6xl px-6 py-24">
+    <AnimatedSection client:visible className="flex items-end justify-between mb-16">
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">{t.latestNews.label}</p>
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+          {t.latestNews.headline}
+        </h2>
+      </div>
+      <a href={getLocalePath(lang, '/blog')} class={buttonVariants({ variant: 'arrow' })}>
+        {t.latestNews.moreNews}
+      </a>
+    </AnimatedSection>
+
+    <AnimatedSection client:visible delay={0.15} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <a href={getLocalePath(lang, `/blog/${post.id}`)} class="group rounded-xl border border-border p-6 flex flex-col gap-4 hover:bg-muted/30 transition-colors">
+          <div class="flex-1 space-y-3">
+            {post.data.tags && post.data.tags[0] && (
+              <Badge variant="secondary" className="text-xs capitalize">
+                {post.data.tags[0]}
+              </Badge>
+            )}
+            <h3 class="font-semibold text-foreground leading-snug group-hover:text-foreground/80 transition-colors">
+              {post.data.title}
+            </h3>
+            <p class="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+              {post.data.description}
+            </p>
+          </div>
+          <div class="pt-2 border-t border-border">
+            <p class="text-xs text-muted-foreground">{formatDate(post.data.pubDate)}</p>
+          </div>
+        </a>
+      ))}
+    </AnimatedSection>
+  </section>
+)}

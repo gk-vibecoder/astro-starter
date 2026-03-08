@@ -1,0 +1,90 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import { seo } from '@/config/seo';
+
+const sections = [
+  {
+    heading: 'Interpretation and Definitions',
+    body: 'Capitalized terms in this policy have defined meanings. "Company" refers to Acme, Inc. "Service" refers to the Acme website and platform at acme.com. "You" refers to the individual accessing the Service. "Personal Data" means any information relating to an identified or identifiable person. "Usage Data" means data collected automatically during use of the Service.',
+  },
+  {
+    heading: 'What Data We Collect',
+    body: 'We collect Personal Data you provide directly — such as your email address and name when you create an account or contact us. We also collect Usage Data automatically, including your IP address, browser type, pages visited, time spent on pages, and device identifiers. We use cookies and web beacons to support analytics and improve the user experience.',
+  },
+  {
+    heading: 'How We Use Your Data',
+    body: 'We use your data to provide and maintain the Service, manage your account, fulfill contractual obligations, contact you with service-related communications, offer relevant opportunities, manage your requests, and analyze usage trends to improve the platform. We do not sell your personal data to any third party.',
+  },
+  {
+    heading: 'Data Sharing',
+    body: 'We may share your information with Service Providers who assist us in operating the platform, subject to confidentiality obligations. Data may be transferred in connection with a business transaction such as a merger or acquisition. We may disclose data when required by law, to protect our rights, or to prevent harm. We do not share your data with advertisers.',
+  },
+  {
+    heading: 'Data Retention',
+    body: 'We retain Personal Data only as long as necessary for the purposes described in this policy, including compliance with legal obligations. Usage Data is retained for shorter periods unless needed for security analysis or platform improvements.',
+  },
+  {
+    heading: 'International Transfers',
+    body: 'Your data may be processed at our offices or by Service Providers in other countries. By using the Service, you consent to such transfers. We ensure appropriate safeguards are in place to protect your data in accordance with applicable privacy regulations.',
+  },
+  {
+    heading: 'Your Rights',
+    body: 'Depending on your location, you may have the right to access, correct, or delete your personal data. You may also object to processing or request restriction. To delete your account and all associated data, contact us at hello@acme.com. We will process your request promptly unless we are legally required to retain certain information.',
+  },
+  {
+    heading: 'Security',
+    body: 'We implement technical and organizational measures to protect your data against unauthorized access, loss, or misuse. All data is encrypted at rest and in transit. We use trusted third-party providers for authentication and infrastructure. No method of transmission over the internet is 100% secure, but we continuously review and improve our security practices.',
+  },
+  {
+    heading: "Children's Privacy",
+    body: 'Our Service is not directed to individuals under the age of 13. We do not knowingly collect personal data from minors. If you believe a minor has provided us with personal data, please contact us and we will remove it promptly.',
+  },
+  {
+    heading: 'Links to Third-Party Sites',
+    body: 'Our Service may contain links to external websites. We are not responsible for the privacy practices or content of those sites and encourage you to review their privacy policies independently.',
+  },
+  {
+    heading: 'Changes to This Policy',
+    body: 'We may update this Privacy Policy from time to time. Changes are posted on this page with an updated "Last updated" date. We will notify you by email of material changes where appropriate. Continued use of the Service after changes constitutes your acceptance of the updated policy.',
+  },
+  {
+    heading: 'Contact',
+    body: 'If you have questions about this Privacy Policy or how we handle your data, please contact us at hello@acme.com.',
+  },
+];
+---
+
+<BaseLayout
+  title={seo.privacyPolicy.title}
+  description={seo.privacyPolicy.description}
+  noindex={seo.privacyPolicy.noindex}
+>
+  <PageHero
+    label="Legal"
+    title="Privacy Policy"
+    description="How we collect, use, and protect your personal data."
+  />
+
+  <section class="mx-auto max-w-3xl px-6 py-16 pb-24">
+    <p class="text-xs text-muted-foreground mb-12">Last updated: [FILL IN DATE]</p>
+
+    <div class="space-y-10">
+      {sections.map(({ heading, body }) => (
+        <div>
+          <h2 class="text-lg font-semibold text-foreground mb-3">{heading}</h2>
+          <p class="text-sm text-muted-foreground leading-relaxed">{body}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-16 rounded-xl border border-border bg-muted/30 p-6">
+      <p class="text-sm text-muted-foreground">
+        Questions about this policy? Contact us at{' '}
+        <a href="mailto:hello@acme.com" class="text-foreground underline underline-offset-4 hover:no-underline">
+          hello@acme.com
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
