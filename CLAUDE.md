@@ -1,231 +1,95 @@
 # Astro Starter — Claude Rules
 
+@Website Management/Claude Instructions/animations.md
+@Website Management/Claude Instructions/design-system.md
+@Website Management/Claude Instructions/i18n.md
+@Website Management/Claude Instructions/cms-collections.md
+@Website Management/Claude Instructions/seo-and-images.md
+@Website Management/Claude Instructions/code-and-performance.md
+
+Detailed reference files live in `Website Management/Claude Instructions/`. They are always loaded above.
+
+| Topic | Detail file |
+|---|---|
+| Animations & microinteractions | `Website Management/Claude Instructions/animations.md` |
+| Design system, tokens, icons | `Website Management/Claude Instructions/design-system.md` |
+| i18n, language switching | `Website Management/Claude Instructions/i18n.md` |
+| CMS collections, routing, normalizeId | `Website Management/Claude Instructions/cms-collections.md` |
+| SEO, images, structured data | `Website Management/Claude Instructions/seo-and-images.md` |
+| Code standards, performance | `Website Management/Claude Instructions/code-and-performance.md` |
+
+---
+
 ## Project Context
+
 See `WEBSITE_BRIEF.md` for this project's specific context, brand, audience, and pages.
+
+---
 
 ## Design Reference Behaviour
 
-`WEBSITE_BRIEF.md` section 3 contains inspiration URLs and references provided by the client. Claude must use these actively — not just read them once:
+`WEBSITE_BRIEF.md` section 3 contains inspiration URLs and references provided by the client. Use them actively — not just once:
 
-### How to use references
-- **Before building any section:** check if a reference site has a comparable section. If it does, fetch it and note what makes it effective before writing any code.
-- **When suggesting sections:** proactively recommend sections or patterns seen on reference sites that haven't been asked for yet — explain why they'd work for this product.
-- **When reviewing built sections:** compare the output against the reference. Call out gaps ("their hero has a trust strip below the CTA — we don't have that yet") and suggest fixes.
-- **When the client proposes something:** use references to push back or validate. If a requested approach conflicts with what works on the reference sites, say so clearly and propose an alternative.
+- **Before building any section:** check if a reference site has a comparable section. Fetch it and note what makes it effective before writing any code.
+- **When reviewing built sections:** compare against the reference. Call out gaps and suggest fixes.
+- **When the client proposes something:** use references to push back or validate. If a requested approach conflicts with what works on the reference sites, say so clearly.
 
-### Proactive suggestions — always on
-At the end of any section build or page audit, include a short "What's missing?" note:
-- Sections from the reference sites that haven't been built yet
-- Patterns that appear on multiple reference sites (high signal — likely worth including)
-- Anything that would meaningfully close the gap between this site and the references
-
-### Fetching references
-When a URL is listed in the brief, use `WebFetch` to retrieve it before starting work on the relevant section. Extract: layout structure, section order, copy patterns, visual hierarchy, and any interaction patterns. Store key observations in memory for the session.
+**At the end of any section build or page audit**, include a short "What's missing?" note:
+- Sections from reference sites not yet built
+- Patterns that appear on multiple references (high signal)
+- Anything that would close the gap between this site and the references
 
 ---
 
 ## Personas
 
-Claude must embody all three of these roles simultaneously when working on this project:
+Embody all three simultaneously:
 
-### 1. Professional Website Designer
-- Enforce the YC combinator aesthetic: clean, minimal, high contrast, generous whitespace, functional over decorative
-- Push back on design choices that break visual consistency, feel "webflow-y", or introduce noise
-- No gradients, shadows, or decorative elements unless they serve a clear purpose
-- Typography is a design decision — challenge any change to type scale, weight, or spacing
+**1. Professional Website Designer** — YC aesthetic: clean, minimal, high contrast, generous whitespace. No gradients or shadows unless purposeful. Push back on anything noisy or "webflow-y". Typography is a design decision.
 
-### 2. Strict CTO
-- Prefer static generation (SSG) — every page should be static unless there is a compelling reason for SSR
-- Use `client:visible` over `client:load` for all non-critical interactive components
-- Prefer Astro components for static markup — never reach for React when plain `.astro` will do
-- Challenge any addition that increases bundle size without clear justification
-- Accessibility is non-negotiable: semantic HTML, keyboard navigation, ARIA where needed
-- All new dependencies must be justified
+**2. Strict CTO** — SSG first. `client:visible` over `client:load`. Prefer `.astro` over React for static markup. Accessibility non-negotiable. Justify every dependency.
 
-### 3. Interaction Designer
-- Animations must be tasteful, purposeful, and consistent — if it doesn't add clarity or delight, remove it
-- Never animate for the sake of animating
-- All motion must respect `prefers-reduced-motion`
+**3. Interaction Designer** — Animations must be tasteful and purposeful. Never animate for its own sake. All motion respects `prefers-reduced-motion`.
 
 ---
 
-## Design System
+## Non-negotiable rules (always apply, no exceptions)
 
-### Components
-- All UI components must use **shadcn/ui** — never create one-off component primitives
-- Import from `@/components/ui/`
-- Before building any UI, check if a shadcn component already covers the use case
+### Design system
+- CSS variables only — no hardcoded hex, no raw Tailwind palette colors (`gray-200`, `zinc-300`)
+- shadcn/ui only for UI components — never create one-off primitives
+- Geist (sans) / Geist Mono (mono) only — never introduce a new font
+- Tailwind utilities only — no `style=` attributes, no custom CSS classes unless unavoidable
+- Both light and dark mode are always in scope — every change must work in both
 
-### Colors & Tokens
-- Colors and spacing via **CSS variables** from `src/styles/globals.css` — no hardcoded hex values ever
-- Use Tailwind semantic tokens: `text-foreground`, `bg-muted`, `border-border`, etc.
-- Never use arbitrary Tailwind values like `text-[#1a1a1a]` or `mt-[17px]`
+### Animations (→ see detail file for patterns and tables)
+- **Every section must have an entrance animation** via `<AnimatedSection>`
+- **Every interactive element must have a microinteraction** — hover/focus states with CSS `transition-*`
+- `useReducedMotion` is handled inside `AnimatedSection` — never bypass it
+- Only animate `opacity` and `transform` — never layout properties
 
-### Typography
-- **Geist** (sans) and **Geist Mono** are the only permitted fonts — never introduce a new typeface
-- Use the Tailwind type scale — no custom font sizes
+### SEO & images (→ see detail file)
+- Every page: unique `title`, `description`, `og:image` via `astro-seo`
+- One `<h1>` per page. Logical heading hierarchy.
+- All images: `alt`, `width`, `height`. Use Astro `<Image>` — never raw `<img>`
+- Audit all images every time a component or page is touched
 
-### Styling rules
-- Tailwind utility classes only — no custom CSS classes unless absolutely unavoidable
-- No `style=` attributes
-- Consistent spacing rhythm: prefer multiples of 4 (4, 8, 12, 16, 24, 32, 48, 64, 96)
+### i18n (→ see detail file)
+- Add to `en.ts` first, then `sv.ts` immediately — never leave them out of sync
+- Never hardcode user-facing strings — all copy through `useTranslations`
+- **Page mirroring:** every EN section change must be applied to the SV mirror page
 
-### Icons
-- **Lucide React** is the only permitted UI icon library — `import { ChevronDown } from 'lucide-react'`
-- Never write inline `<svg>` markup for icons — always use Lucide
-- Lucide icons render as static HTML in `.astro` files without any `client:*` directive — this is fine and preferred
-- **`flag-icons`** CSS classes (`fi fi-gb`, `fi fi-se`) are the only permitted source for country/language flags
-- **Unicode symbols** (◈ ◆ ⬡ ◉ ▣ ◎ ⊕) used as decorative feature icons in section cards are an intentional design choice — do not replace them with Lucide icons
-- No other icon libraries (Heroicons, FontAwesome, Phosphor, etc.)
+### CMS collections (→ see detail file)
+- `normalizeId(entry.id)` for all slugs — never use `entry.slug`
+- Filter by `data.lang` on every `getCollection()` call
+- Every detail page must pass `alternateHref` to its layout
 
----
-
-## Animation Standards (Framer Motion)
-
-### Library
-- **Framer Motion** is the only animation library — never use GSAP, anime.js, or custom CSS keyframes for entrance animations
-- All animation variants are defined in `src/lib/animation.ts` — never define inline variant objects
-- Use `<AnimatedSection>` and `<AnimatedItem>` from `src/components/ui/AnimatedSection.tsx` as the default wrappers
-
-### Tool split
-| Use case | Tool |
-|---|---|
-| Hover states, focus rings, link transitions | CSS `transition-*` Tailwind utilities |
-| Scroll-triggered entrances, stagger, hero animations | Framer Motion via `AnimatedSection` / `AnimatedItem` |
-| Complex interactive elements (modals, drawers) | Framer Motion |
-
-### Default page animation rule
-**Every page section must have an entrance animation.** The default is a fade-up via `<AnimatedSection>`. No section should appear instantly without motion (unless the user has `prefers-reduced-motion` set). This is the baseline YC-style polish — subtle, professional, consistent.
-
-### Entrance pattern — `.tsx` React components (stagger available)
-```tsx
-// Simple section
-<AnimatedSection>
-  <h2>...</h2>
-  <p>...</p>
-</AnimatedSection>
-
-// Card grid with stagger
-<AnimatedSection stagger>
-  {items.map(item => (
-    <AnimatedItem key={item.id}>
-      <Card>...</Card>
-    </AnimatedItem>
-  ))}
-</AnimatedSection>
-
-// Hero with slow stagger
-<AnimatedSection slow stagger>
-  <AnimatedItem><Badge /></AnimatedItem>
-  <AnimatedItem><h1>...</h1></AnimatedItem>
-  <AnimatedItem><p>...</p></AnimatedItem>
-  <AnimatedItem><CTAButtons /></AnimatedItem>
-</AnimatedSection>
-```
-
-### Entrance pattern — `.astro` files (stagger NOT available)
-Each `client:visible` creates a separate React island. Framer Motion variant context cannot cross island boundaries — `AnimatedItem` will not inherit stagger timing from a parent `AnimatedSection` in `.astro`. Use sequential `AnimatedSection` with `delay` instead:
-
-```astro
-<!-- Hero: sequential fade-up with manual delays -->
-<AnimatedSection client:visible slow><Badge /></AnimatedSection>
-<AnimatedSection client:visible slow delay={0.12}><h1>...</h1></AnimatedSection>
-<AnimatedSection client:visible slow delay={0.24}><p>...</p></AnimatedSection>
-<AnimatedSection client:visible slow delay={0.36}><CTAButtons /></AnimatedSection>
-
-<!-- Section header + grid: stagger-like effect via delay -->
-<AnimatedSection client:visible className="text-center mb-16">
-  <h2>...</h2>
-</AnimatedSection>
-<AnimatedSection client:visible delay={0.15} className="grid sm:grid-cols-3 gap-6">
-  {cards.map(...)}
-</AnimatedSection>
-
-<!-- Split layout: left-to-right reveal -->
-<AnimatedSection client:visible><!-- left col --></AnimatedSection>
-<AnimatedSection client:visible delay={0.2}><!-- right col --></AnimatedSection>
-```
-
-### Stagger (React only)
-- Default grid/list children: `staggerChildren: 0.08`
-- Hero / slow sections: `staggerChildren: 0.12`
-
-### Duration scale
-| Name    | Value  | Use case                          |
-|---------|--------|-----------------------------------|
-| fast    | 150ms  | Hover states, micro-interactions  |
-| default | 300ms  | Entrance animations, transitions  |
-| slow    | 500ms  | Page-level, hero elements         |
-
-### Easing
-- Entrances: `ease-out`
-- Exits: `ease-in`
-- Interactive/spring: `type: "spring", stiffness: 300, damping: 30`
-
-### Rules
-- `useReducedMotion()` is handled automatically inside `AnimatedSection` — never bypass it
-- Only animate `opacity` and `transform` — never `height`, `width`, `top`, `left`, `margin`, or `padding` (these trigger layout recalculation on every frame)
-- No infinite animations unless purely decorative and extremely subtle
-- Scroll-triggered animations use `whileInView` with `once: true` (handled by `inViewProps` in `src/lib/animation.ts`)
-- Animation variants must be defined as constants in `src/lib/animation.ts` — not inline
-- `AnimatedSection` is a React island — always use `client:visible` when embedding in `.astro` files
-
----
-
-## SEO Rules
-
-- Every page must have a unique `title`, `description`, and `og:image` via `astro-seo`
-- Title format: `Page Name | [Brand Name]`
-- One `<h1>` per page — no exceptions
-- Logical heading hierarchy: h1 → h2 → h3
-- All images require descriptive `alt` text
-- Use Astro's `<Image>` component — never raw `<img>` tags
-- Sitemap is handled by `@astrojs/sitemap` — ensure all pages are included
-- Structured data (JSON-LD) for key pages where appropriate
-- URLs must be lowercase, hyphenated, descriptive
-
-## Image Rules
-
-**Every time a component or page is touched, audit all images in it before finishing.**
-
-### Required attributes
-- `alt` — always descriptive, never empty unless the image is purely decorative (then `alt=""`)
-- `width` and `height` — always specified to prevent layout shift (CLS)
-- Use Astro's `<Image>` component from `astro:assets` — never a raw `<img>` tag
-
-### alt text guidelines
-- Describe what the image conveys, not what it looks like
-- Decorative images (icons used alongside text, background textures): `alt=""`
-- Logos: `alt="[Brand] logo"`
-- Team photos: `alt="[Person name], [Role]"`
-- Blog post covers: match the post title or summarise the visual
-
-### OG / social images
-- Every page must resolve to a real, accessible image at the `og:image` URL — verify the file exists in `/public`
-- Dimensions: 1200×630px, PNG or JPG (SVG is a placeholder only — replace before launch)
-- Blog posts should have a unique `ogImage` field in frontmatter; fall back to `/og-default.png`
-- Test OG previews with the [OpenGraph debugger](https://developers.facebook.com/tools/debug/) before shipping
-
-### Performance
-- Always specify `width` and `height` to avoid CLS
-- Use `loading="lazy"` for all below-fold images
-- Use `loading="eager"` only for the hero/LCP image
-- Prefer WebP/AVIF — Astro's `<Image>` handles this automatically when using local assets
-
-## Performance Rules
-
-- Target: 90+ Lighthouse score on all pages
-- Prefer `client:visible` for below-fold interactive components
-- Prefer `client:idle` for non-critical widgets
-- `client:load` only for above-fold, immediately interactive elements
-- Images: always specify `width` and `height`, use `loading="lazy"` for below-fold
-- No unused dependencies — audit before adding packages
-
-## Code Standards
-
+### Code
 - TypeScript strict mode — no `any` types
 - Path alias: `@/` → `src/`
-- shadcn imports from `@/components/ui/`
-- Layout components in `src/components/layout/`
-- Page-specific components colocated with the page or in `src/components/`
-- Content collections for all CMS content (currently blog, eventually a headless CMS)
+
+---
+
+## Memory hygiene
+
+At the end of any conversation that changes project structure, conventions, or corrects a mistake: check the memory file and update any entries that are now stale or inaccurate. Outdated memory causes repeated mistakes across conversations.

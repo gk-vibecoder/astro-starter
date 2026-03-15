@@ -7,7 +7,16 @@ Answer (or ask the user):
 - Where does it sit in the site hierarchy — top-level, nested, or blog/content?
 - Does this page already exist in any form?
 
-## 2. SEO & routing setup
+## 2. References
+Ask the user before proceeding:
+- Do you have any reference sites, pages, or screenshots for this page?
+  - **Links:** paste URLs — Claude will fetch and analyse them before writing any code
+  - **Screenshots:** share image paths — Claude will read and extract layout/visual patterns from them
+- If references are provided: extract layout structure, section order, copy patterns, visual hierarchy, and interaction patterns. Note what makes each effective.
+- If no references are provided: check `WEBSITE_BRIEF.md` section 3 for any project-level references that apply to this page type.
+- Store key observations in memory before continuing to the next step.
+
+## 3. SEO & routing setup
 Establish all of these before any markup is written:
 
 **URL**
@@ -50,7 +59,7 @@ Establish all of these before any markup is written:
 - What descriptive anchor text will be used?
 - Plan at least one inbound internal link before launch
 
-## 3. Heading hierarchy
+## 4. Heading hierarchy
 Plan the full heading structure before writing markup:
 - One `<h1>` — what is it?
 - Logical h2 → h3 flow beneath it

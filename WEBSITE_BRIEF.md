@@ -49,7 +49,7 @@
 
 ## 3. Design Inspiration & References
 
-> Claude will actively use these references throughout the project — comparing sections, pushing back on decisions, and proactively suggesting improvements based on patterns found here.
+> **How Claude uses these references:** Before building any section, Claude fetches the relevant reference and extracts: layout structure, section order, copy patterns, visual hierarchy, and interaction patterns. When reviewing built sections, Claude compares against the reference and calls out gaps. When you propose something, Claude uses these references to push back or validate. At the end of every section build or page audit, Claude includes a "What's missing?" note listing patterns from the references not yet implemented.
 
 ### Inspiration sites
 List URLs and note specifically what you like about each one:
