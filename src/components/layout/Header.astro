@@ -2,8 +2,22 @@
 import ThemeToggle from '@/components/layout/ThemeToggle.astro';
 import { getLangFromUrl, useTranslations, getLocalePath } from '@/i18n/utils';
 
+interface Props {
+  alternateHref?: string;
+}
+
+const { alternateHref } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const currentPath = Astro.url.pathname;
+const alternateLangCode = lang === 'sv' ? 'gb' : 'se';
+const alternateLangLabel = lang === 'sv' ? 'English' : 'Svenska';
+const alternateUrl =
+  alternateHref ??
+  (lang === 'sv'
+    ? currentPath.replace(/^\/sv/, '') || '/'
+    : `/sv${currentPath}`);
 
 type NavLink = { type: 'link'; label: string; href: string };
 type NavGroup = { type: 'group'; label: string; items: { label: string; href: string; sub: string }[] };
@@ -39,8 +53,6 @@ const navItems: NavItem[] = [
     ],
   },
 ];
-
-const currentPath = Astro.url.pathname;
 
 function groupIsActive(items: { href: string }[]) {
   return items.some(({ href }) => currentPath === href || currentPath.startsWith(href));
@@ -121,6 +133,14 @@ function groupIsActive(items: { href: string }[]) {
 
     <!-- Desktop CTA -->
     <div class="hidden md:flex items-center gap-3">
+      <a
+        href={alternateUrl}
+        class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        aria-label={`Switch to ${alternateLangLabel}`}
+      >
+        <span class={`fi fi-${alternateLangCode} text-base`} aria-hidden="true" />
+        <span class="sr-only">{alternateLangLabel}</span>
+      </a>
       <ThemeToggle />
       <a
         href="#"
