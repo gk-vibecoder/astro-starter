@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import IndexLayout from '@/layouts/IndexLayout.astro';
+import { FAQAccordion } from '@/components/ui/FAQAccordion';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { seoSv } from '@/config/seo.sv';
+import { normalizeId } from '@/lib/related';
+
+// SV-first with EN fallback
+const svEntries = await getCollection('faq', (e) => !e.data.draft && e.data.lang === 'sv');
+const enEntries = await getCollection('faq', (e) => !e.data.draft && e.data.lang === 'en');
+const svIds = new Set(svEntries.map((e) => normalizeId(e.id)));
+const entries = [...svEntries, ...enEntries.filter((e) => !svIds.has(normalizeId(e.id)))];
+
+const byCategory = entries
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .reduce<Record<string, typeof entries>>((acc, entry) => {
+    const cat = entry.data.category;
+    (acc[cat] ??= []).push(entry);
+    return acc;
+  }, {});
+
+const categories = Object.keys(byCategory);
+---
+
+<IndexLayout
+  title={seoSv.faq.title}
+  description={seoSv.faq.description}
+  eyebrow="FAQ"
+  heroTitle="Vanliga frågor"
+  heroDescription="Hittar du inte vad du letar efter? Kontakta oss."
+  alternateHref="/faq"
+>
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    {categories.map((category) => (
+      <AnimatedSection client:visible className="mb-12">
+        <h2 class="text-sm font-semibold tracking-widest uppercase text-muted-foreground mb-6">
+          {category}
+        </h2>
+        <FAQAccordion
+          client:visible
+          items={byCategory[category].map((e) => ({
+            q: e.data.question,
+            a: e.data.answer,
+          }))}
+        />
+        <div class="mt-4 pt-4 border-t border-border">
+          {byCategory[category].map((e) => (
+            <a
+              href={`/sv/faq/${normalizeId(e.id)}`}
+              class="block text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+            >
+              {e.data.question} →
+            </a>
+          ))}
+        </div>
+      </AnimatedSection>
+    ))}
+  </section>
+</IndexLayout>

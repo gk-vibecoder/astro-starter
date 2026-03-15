@@ -1,0 +1,60 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+
+export async function getStaticPaths() {
+  const normalizeId = (id: string) => id.replace(/(?:\.sv)?\.(md|mdx)$/, '');
+  const svEntries = await getCollection('faq', (e) => !e.data.draft && e.data.lang === 'sv');
+  const enEntries = await getCollection('faq', (e) => !e.data.draft && e.data.lang === 'en');
+  const svIds = new Set(svEntries.map((e) => normalizeId(e.id)));
+
+  // SV-first with EN fallback
+  const entries = [
+    ...svEntries,
+    ...enEntries.filter((e) => !svIds.has(normalizeId(e.id))),
+  ];
+
+  return entries.map((entry) => ({
+    params: { slug: normalizeId(entry.id) },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'faq'>;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const normalizeId = (id: string) => id.replace(/(?:\.sv)?\.(md|mdx)$/, '');
+const cleanSlug = normalizeId(entry.id);
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: entry.data.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: entry.data.answer,
+      },
+    },
+  ],
+});
+---
+
+<ArticleLayout
+  title={entry.data.question}
+  description={entry.data.answer}
+  category={entry.data.category}
+  backHref="/sv/faq"
+  backLabel="Tillbaka till FAQ"
+  alternateHref={`/faq/${cleanSlug}`}
+  pageSchema={faqSchema}
+  headings={headings}
+>
+  <Content />
+</ArticleLayout>

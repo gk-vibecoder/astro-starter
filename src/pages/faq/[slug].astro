@@ -1,0 +1,51 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import { normalizeId } from '@/lib/related';
+
+export async function getStaticPaths() {
+  const normalizeId = (id: string) => id.replace(/(?:\.sv)?\.(md|mdx)$/, '');
+  const entries = await getCollection('faq', (e) => !e.data.draft && e.data.lang === 'en');
+  return entries.map((entry) => ({
+    params: { slug: normalizeId(entry.id) },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'faq'>;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const cleanSlug = normalizeId(entry.id);
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: entry.data.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: entry.data.answer,
+      },
+    },
+  ],
+});
+---
+
+<ArticleLayout
+  title={entry.data.question}
+  description={entry.data.answer}
+  category={entry.data.category}
+  backHref="/faq"
+  backLabel="Back to FAQ"
+  alternateHref={`/sv/faq/${cleanSlug}`}
+  pageSchema={faqSchema}
+  headings={headings}
+>
+  <Content />
+</ArticleLayout>
