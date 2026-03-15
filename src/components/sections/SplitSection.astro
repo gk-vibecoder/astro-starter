@@ -1,0 +1,43 @@
+---
+/**
+ * SplitSection — generic left/right split layout.
+ *
+ * Slot "left"  → text content (label, headline, description, CTA)
+ * Slot "right" → visual (image, mockup, illustration, component)
+ *
+ * Props:
+ *  - flip       reverse column order on desktop (visual left, text right)
+ *  - tinted     apply alternating section background
+ *  - align      vertical alignment of both columns (default: "center")
+ */
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+
+interface Props {
+  flip?: boolean;
+  tinted?: boolean;
+  align?: 'start' | 'center' | 'end';
+}
+
+const { flip = false, tinted = false, align = 'center' } = Astro.props;
+
+const sectionClass = tinted
+  ? 'border-y border-border bg-muted/30 py-24'
+  : 'py-24';
+
+const gridClass = [
+  'mx-auto max-w-6xl px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16',
+  `items-${align}`,
+].join(' ');
+---
+
+<section class={sectionClass}>
+  <div class={gridClass}>
+    <AnimatedSection client:visible className={flip ? 'lg:order-2' : ''}>
+      <slot name="left" />
+    </AnimatedSection>
+
+    <AnimatedSection client:visible delay={0.15} className={flip ? 'lg:order-1' : ''}>
+      <slot name="right" />
+    </AnimatedSection>
+  </div>
+</section>

@@ -1,0 +1,92 @@
+---
+/**
+ * Newsletter signup component.
+ *
+ * compact=false (default) — full section with border-y, used between article and CTA
+ * compact=true            — minimal row, used inside the footer
+ */
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+{compact ? (
+  <!-- Footer row variant -->
+  <div class="pb-10 mb-10">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-1">
+          {t.newsletter.eyebrow}
+        </p>
+        <p class="text-sm font-semibold text-foreground">{t.newsletter.headline}</p>
+      </div>
+      <form
+        method="post"
+        action="#"
+        class="flex w-full gap-2 sm:max-w-sm"
+        aria-label={t.newsletter.eyebrow}
+      >
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder={t.newsletter.placeholder}
+          class="flex-1 min-w-0 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+        />
+        <button
+          type="submit"
+          class="shrink-0 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-80 transition-opacity"
+        >
+          {t.newsletter.cta}
+        </button>
+      </form>
+    </div>
+  </div>
+) : (
+  <!-- Section variant -->
+  <div class="border-y border-border">
+    <AnimatedSection client:visible className="mx-auto max-w-3xl px-6 py-16">
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">
+        {t.newsletter.eyebrow}
+      </p>
+      <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <div class="max-w-sm">
+          <h2 class="text-xl font-bold tracking-tight text-foreground">
+            {t.newsletter.headline}
+          </h2>
+          <p class="mt-2 text-sm text-muted-foreground leading-relaxed">
+            {t.newsletter.description}
+          </p>
+        </div>
+        <form
+          method="post"
+          action="#"
+          class="flex w-full flex-col gap-2 sm:flex-row md:max-w-xs"
+          aria-label={t.newsletter.eyebrow}
+        >
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder={t.newsletter.placeholder}
+            class="flex-1 min-w-0 rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+          />
+          <button
+            type="submit"
+            class="shrink-0 rounded-lg bg-foreground px-5 py-2.5 text-sm font-medium text-background hover:opacity-80 transition-opacity"
+          >
+            {t.newsletter.cta}
+          </button>
+        </form>
+      </div>
+      <p class="mt-4 text-xs text-muted-foreground">{t.newsletter.note}</p>
+    </AnimatedSection>
+  </div>
+)}

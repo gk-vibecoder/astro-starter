@@ -1,0 +1,77 @@
+---
+/**
+ * IntegrationsMarqueeStrip — infinite scrolling logo strip.
+ *
+ * Props:
+ *  - eyebrow   Label above the strip (default: 'Integrations')
+ *  - logos     Array of { name, initials } objects to display as logo pills
+ *  - durationMs  CSS animation duration in ms (default: 30000)
+ *  - tinted    Apply alternating section background
+ *
+ * Uses InfiniteSlider — requires animate-slider keyframes in globals.css.
+ */
+import { InfiniteSlider } from '@/components/ui/InfiniteSlider';
+
+interface Logo {
+  name: string;
+  initials: string;
+  href?: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  logos: Logo[];
+  durationMs?: number;
+  tinted?: boolean;
+}
+
+const {
+  eyebrow = 'Integrations',
+  logos,
+  durationMs = 30000,
+  tinted = false,
+} = Astro.props;
+
+const sectionClass = tinted
+  ? 'border-y border-border bg-muted/30 py-16'
+  : 'py-16';
+---
+
+<section class={sectionClass}>
+  {eyebrow && (
+    <p class="text-center text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-8">
+      {eyebrow}
+    </p>
+  )}
+
+  <div class="relative">
+    <!-- Fade edges -->
+    <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent"></div>
+
+    <InfiniteSlider client:visible durationMs={durationMs} gap={16}>
+      {logos.map(({ name, initials, href }) => (
+        href ? (
+          <a
+            href={href}
+            class="flex items-center gap-2.5 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors shrink-0"
+          >
+            <span class="size-6 rounded bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground">
+              {initials}
+            </span>
+            {name}
+          </a>
+        ) : (
+          <div
+            class="flex items-center gap-2.5 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground shrink-0"
+          >
+            <span class="size-6 rounded bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground">
+              {initials}
+            </span>
+            {name}
+          </div>
+        )
+      ))}
+    </InfiniteSlider>
+  </div>
+</section>
