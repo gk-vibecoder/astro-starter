@@ -84,7 +84,7 @@ export const en = {
   },
 
   featuresBento: {
-    label: 'Why Acme',
+    eyebrow: 'Why Acme',
     headline: 'Your AI-powered platform to manage and grow',
     description: 'Skip the manual work. Consolidate everything in one platform and let Aria AI do the heavy lifting.',
     aria: {
@@ -222,5 +222,66 @@ export const en = {
     ctaLabel: 'Get started',
     note: 'No payment information required.',
     emailPlaceholder: 'Enter your email',
+  },
+
+  howItWorks: {
+    eyebrow: 'How it works',
+    headline: 'Up and running in minutes',
+    description: 'Connect, configure, and launch in three simple steps. No onboarding calls, no lengthy setup.',
+    cta: 'Get started free',
+    ctaHref: '/signup',
+    steps: [
+      {
+        step: '01',
+        title: 'Create your account',
+        body: 'Sign up for free in seconds. No payment information required — start right away.',
+      },
+      {
+        step: '02',
+        title: 'Connect your tools',
+        body: 'Link your existing tools and services in a few clicks. We support 50+ integrations out of the box.',
+      },
+      {
+        step: '03',
+        title: 'Get AI-powered insights',
+        body: 'Your data is consolidated automatically. Ask Aria AI about your metrics, trends, and opportunities — any time.',
+      },
+    ],
+  },
+
+  newsletter: {
+    eyebrow: 'Newsletter',
+    headline: 'Stay in the loop',
+    description: 'Get the latest product updates, insights, and stories delivered to your inbox.',
+    placeholder: 'your@email.com',
+    cta: 'Subscribe',
+    note: 'No spam. Unsubscribe anytime.',
+  },
+
+  faqPage: {
+    backLabel: 'Back to FAQ',
+    searchPlaceholder: 'Search questions…',
+    noResults: 'No results found.',
+    allCategories: 'All',
+    onThisPage: 'On this page',
+  },
+
+  testimonialPage: {
+    eyebrow: 'Customer Stories',
+    headline: 'What our customers say',
+    description: 'Hear from teams and founders who use Acme every day to manage and grow.',
+    backLabel: 'Back to Stories',
+    keyResult: 'Key result',
+    searchPlaceholder: 'Search stories…',
+    comingSoon: 'More stories coming soon',
+    comingSoonDesc: "We're collecting stories from our customers. Check back shortly.",
+    categoryAll: 'All',
+  },
+
+  blogDetail: {
+    backLabel: 'Back to Blog',
+    keepReading: 'Keep reading',
+    relatedArticles: 'Related articles',
+    onThisPage: 'On this page',
   },
 } as const;
