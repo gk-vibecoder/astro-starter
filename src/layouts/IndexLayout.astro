@@ -1,0 +1,65 @@
+---
+/**
+ * IndexLayout — shared layout for all CMS index / listing pages.
+ *
+ * Composes BaseLayout + PageHero so individual pages only need to supply
+ * their SEO config and hero copy, then slot in their content grid.
+ *
+ * Usage:
+ *   <IndexLayout title={seo.blog.title} description={seo.blog.description}
+ *     eyebrow="Blog" heroTitle="Insights & updates">
+ *     <!-- content section goes here -->
+ *   </IndexLayout>
+ */
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+
+interface Props {
+  // ── SEO / BaseLayout ──────────────────────────────────────────────────────
+  title: string;
+  description: string;
+  og?: { image?: string; type?: 'website' | 'article' };
+  canonical?: string;
+  noindex?: boolean;
+  pageSchema?: string;
+  alternateHref?: string;
+
+  // ── Hero ──────────────────────────────────────────────────────────────────
+  eyebrow?: string;
+  heroTitle: string;
+  heroDescription?: string;
+  align?: 'left' | 'center';
+}
+
+const {
+  title,
+  description,
+  og,
+  canonical,
+  noindex,
+  pageSchema,
+  alternateHref,
+  eyebrow,
+  heroTitle,
+  heroDescription,
+  align,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  og={og}
+  canonical={canonical}
+  noindex={noindex}
+  pageSchema={pageSchema}
+  alternateHref={alternateHref}
+>
+  <PageHero
+    eyebrow={eyebrow}
+    title={heroTitle}
+    description={heroDescription}
+    align={align}
+  />
+  <slot />
+</BaseLayout>

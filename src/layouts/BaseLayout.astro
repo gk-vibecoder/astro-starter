@@ -16,6 +16,10 @@ interface Props {
   noindex?: boolean;
   /** Optional page-specific JSON-LD schema (stringified) */
   pageSchema?: string;
+  /** Alternate locale href for the language switcher. Pass on detail pages
+   *  where slugs may differ between EN and SV, or to fall back to the
+   *  collection index. */
+  alternateHref?: string;
 }
 
 const {
@@ -25,6 +29,7 @@ const {
   canonical,
   noindex = false,
   pageSchema,
+  alternateHref,
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
@@ -103,7 +108,7 @@ const websiteSchema = JSON.stringify({
   </head>
 
   <body>
-    <Header />
+    <Header alternateHref={alternateHref} />
     <main>
       <slot />
     </main>

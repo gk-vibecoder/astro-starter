@@ -1,0 +1,289 @@
+---
+/**
+ * Shared layout for all article-type content: blog posts, news, FAQ, testimonials, etc.
+ *
+ * Props guide:
+ *  - date              omit for collections without a publish date
+ *  - backHref/Label    omit to hide back navigation
+ *  - category          omit if the collection has no category
+ *  - author            show a byline
+ *  - showCTA           set false to suppress the bottom CTA (default: true)
+ *  - showNewsletter    set true to show newsletter signup above CTA (default: false)
+ *  - headings          pass from render() to enable sticky table of contents
+ *  - relatedArticles   pass from pickRelated() to show "Keep reading" grid
+ *  - pageSchema        override the auto-generated Article schema (e.g. FAQPage)
+ *
+ * Named slots:
+ *  - header-extra    extra content inside the header band, below the meta row
+ *  - content-before  inside the header band, below header-extra
+ *  - content-after   after prose, before related articles
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Badge } from '@/components/ui/badge';
+import CTA from '@/components/sections/CTA.astro';
+import NewsletterSignup from '@/components/sections/NewsletterSignup.astro';
+import { ArrowLeft, Clock, CalendarDays, User } from 'lucide-react';
+import { getLangFromUrl } from '@/i18n/utils';
+import type { RelatedArticle } from '@/lib/related';
+import { TableOfContents } from '@/components/ui/TableOfContents';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+
+type Heading = { depth: number; slug: string; text: string };
+
+interface Props {
+  title: string;
+  description: string;
+  date?: Date;
+  category?: string;
+  author?: string;
+  readingTime?: number;
+  backHref?: string;
+  backLabel?: string;
+  image?: string;
+  ogImage?: string;
+  alternateHref?: string;
+  showCTA?: boolean;
+  showNewsletter?: boolean;
+  relatedArticles?: RelatedArticle[];
+  headings?: Heading[];
+  pageSchema?: string;
+  ctaTitle?: string;
+  ctaDescription?: string;
+  ctaLabel?: string;
+}
+
+const {
+  title,
+  description,
+  date,
+  category,
+  author,
+  readingTime,
+  backHref,
+  backLabel,
+  image,
+  ogImage,
+  alternateHref,
+  showCTA = true,
+  showNewsletter = false,
+  relatedArticles,
+  headings = [],
+  pageSchema,
+  ctaTitle,
+  ctaDescription,
+  ctaLabel,
+} = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length > 1;
+
+const tocLabel = lang === 'sv' ? 'På den här sidan' : 'On this page';
+const hasMetaRow = !!(date || author || readingTime);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString(lang === 'sv' ? 'sv-SE' : 'en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+const siteUrl = 'https://acme.com'; // TODO: update to match siteConfig.url
+
+const articleSchema = date
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      datePublished: date.toISOString(),
+      author: author
+        ? { '@type': 'Person', name: author }
+        : { '@type': 'Organization', name: 'Acme' },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Acme',
+        url: siteUrl,
+        logo: { '@type': 'ImageObject', url: `${siteUrl}/favicon.svg` },
+      },
+      ...(ogImage ? { image: ogImage } : {}),
+    })
+  : undefined;
+
+const resolvedSchema = pageSchema ?? articleSchema;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  og={{ type: 'article', image: ogImage }}
+  alternateHref={alternateHref}
+  pageSchema={resolvedSchema}
+>
+
+  <!-- ── Article header band ── -->
+  <div class="border-b border-border bg-muted/30">
+    <AnimatedSection client:visible slow className="mx-auto max-w-3xl px-6 pt-10 pb-12">
+      <div>
+
+      {backHref && (
+        <div class="mb-8">
+          <a
+            href={backHref}
+            class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft class="size-3.5" />
+            {backLabel}
+          </a>
+        </div>
+      )}
+
+      {category && (
+        <div class="mb-4">
+          <Badge variant="secondary">{category}</Badge>
+        </div>
+      )}
+
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
+        {title}
+      </h1>
+
+      <p class="mt-4 text-lg text-muted-foreground leading-relaxed">
+        {description}
+      </p>
+
+      {hasMetaRow && (
+        <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+          {date && (
+            <span class="inline-flex items-center gap-1.5">
+              <CalendarDays class="size-3.5 shrink-0" />
+              <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            </span>
+          )}
+          {author && (
+            <span class="inline-flex items-center gap-1.5">
+              <User class="size-3.5 shrink-0" />
+              <span class="font-medium text-foreground">{author}</span>
+            </span>
+          )}
+          {readingTime && (
+            <span class="inline-flex items-center gap-1.5">
+              <Clock class="size-3.5 shrink-0" />
+              <span>{readingTime} min read</span>
+            </span>
+          )}
+        </div>
+      )}
+
+      <!-- Collection-specific header additions (outcome callout, avatar, pull quote, etc.) -->
+      <slot name="header-extra" />
+
+      <!-- Interactive widget (e.g. calculator) — inside the band -->
+      <slot name="content-before" />
+
+      </div>
+    </AnimatedSection>
+  </div>
+
+  <!-- ── Content area ── -->
+  <div class="relative mx-auto max-w-3xl px-6">
+
+    {image && (
+      <div class="mt-10">
+        <img
+          src={image}
+          alt=""
+          width={1200}
+          height={630}
+          loading="eager"
+          class="w-full h-auto rounded-xl"
+        />
+      </div>
+    )}
+
+    <AnimatedSection client:visible delay={0.1} className="prose prose-zinc max-w-none py-12">
+      <slot />
+    </AnimatedSection>
+
+    <!-- After prose (e.g. external link, CTA widget) -->
+    <slot name="content-after" />
+
+    {hasToc && (
+      <aside class="absolute left-full top-0 hidden h-full xl:block">
+        <div class="sticky top-24 ml-16 w-[200px] pt-12">
+          <AnimatedSection client:visible delay={0.2}>
+            <TableOfContents
+              client:visible
+              headings={tocHeadings}
+              label={tocLabel}
+            />
+          </AnimatedSection>
+        </div>
+      </aside>
+    )}
+
+  </div>
+
+  <!-- ── Related articles ── -->
+  {relatedArticles && relatedArticles.length > 0 && (
+    <section class="py-20">
+      <div class="mx-auto max-w-5xl px-6">
+        <AnimatedSection client:visible>
+          <p class="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-3">
+            {lang === 'sv' ? 'Läs vidare' : 'Keep reading'}
+          </p>
+          <h2 class="text-2xl font-bold tracking-tight text-foreground mb-10">
+            {lang === 'sv' ? 'Relaterade artiklar' : 'Related articles'}
+          </h2>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {relatedArticles.map((article) => (
+              <a
+                href={article.href}
+                class="group flex flex-col rounded-xl border border-border bg-background overflow-hidden hover:border-primary/20 hover:shadow-sm transition-all duration-200 hover:-translate-y-0.5"
+              >
+                {article.image && (
+                  <div class="aspect-video overflow-hidden">
+                    <img
+                      src={article.image}
+                      alt=""
+                      width={600}
+                      height={338}
+                      loading="lazy"
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                )}
+                <div class="flex flex-col gap-2 p-5 flex-1">
+                  {article.category && (
+                    <span class="text-xs font-medium text-muted-foreground">{article.category}</span>
+                  )}
+                  <p class="font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
+                    {article.title}
+                  </p>
+                  <p class="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                    {article.description}
+                  </p>
+                  {article.meta && (
+                    <p class="text-xs text-muted-foreground mt-auto pt-3">{article.meta}</p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        </AnimatedSection>
+      </div>
+    </section>
+  )}
+
+  {showNewsletter && <NewsletterSignup />}
+
+  {showCTA && (
+    <CTA
+      title={ctaTitle}
+      description={ctaDescription}
+      ctaLabel={ctaLabel}
+    />
+  )}
+</BaseLayout>
